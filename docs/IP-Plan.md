@@ -42,15 +42,14 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | R1 ↔ CSW2          | 10.100.0.8/30  | R1: .9, CSW2: .10        |
 | R2 ↔ CSW1          | 10.100.0.12/30 | R2: .13, CSW1: .14       |
 | R2 ↔ CSW2          | 10.100.0.16/30 | R2: .17, CSW2: .18       |
-| R-EDGE ↔ FW inside | 10.100.0.36/30 | R-EDGE: .37, FW: .38     |
-
-| FW ↔ R1 core       | 10.100.0.40/30 | FW: .41, R1: .42         |
-| FW ↔ R2 core       | 10.100.0.44/30 | FW: .45, R2: .46         |
-| FW ↔ DMZ-SW        | 10.100.0.48/30 | FW: .49, DMZ-SW: .50     |
+| R-EDGE ↔ FW inside | 10.100.0.20/30 | R-EDGE: .21, FW: .22     |
+| FW ↔ R1 core       | 10.100.0.24/30 | FW: .25, R1: .26         |
+| FW ↔ R2 core       | 10.100.0.28/30 | FW: .29, R2: .30         |
+| FW ↔ DMZ-SW        | 10.100.0.32/30 | FW: .33, DMZ-SW: .34     |
 | FW ↔ ISP1          | Unknown        | Unassigned               |
 | FW ↔ ISP2          | Unknown        | Unassigned               |
-| R-EDGE ↔ ISP1      | 10.100.0.52/30 | R-EDGE: .53, ISP1: .54   |
-| R-EDGE ↔ ISP2      | 10.100.0.56/30 | R-EDGE: .57, ISP2: .58   |
+| R-EDGE ↔ ISP1      | 10.100.0.36/30 | R-EDGE: .37, ISP1: .38   |
+| R-EDGE ↔ ISP2      | 10.100.0.40/30 | R-EDGE: .41, ISP2: .42   |
 | ISP1 ↔ Internet    | Unknown        | Unassigned               |
 | ISP2 ↔ Internet    | Unknown        | Unassigned               |
 | BR1-RTR ↔ Internet | DHCP           | NATed real IP            |
