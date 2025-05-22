@@ -9,9 +9,8 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | Loopbacks       | 10.255.X.X/32  | Router-IDs, BGP            |
 | P2P Links       | 10.100.X.X/30  | Point-to-point links       |
 | Tunnel Intfs    | 10.200.X.X/24  | DMVPN tunnels (R1 + BRs)   |
-| VLANs           | 10.10X.X.X/28  | SVI gateways               |
-| DMZ Servers     | 10.150.0.0/28  | Syslog, DNS, SNMP, DHCP    |
-| Mgmt & Mon      | 10.250.0.0/28  | SNMP, NetFlow, etc         |
+| VLANs           | 10.10X.X.X/24  | SVI gateways               |
+| DMZ Servers     | 10.150.0.0/24  | Syslog, DNS, SNMP, etc     |
 | NAT Outside     | DHCP from net  | BR routers & Edge use this |
 
 ## Loopback IPs (/32)
@@ -26,12 +25,12 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | ASW2     | 10.255.0.6   | Loopback0               |
 | ASW3     | 10.255.0.7   | Loopback0               |
 | ASW4     | 10.255.0.8   | Loopback0               |
-| R-EDGE   | 10.255.0.9   | BGP Router-ID           |
+| R-EDGE   | 10.255.0.9   | BGP Router-ID, HUB      |
 | ISP1     | 10.255.0.11  | Test reachability       |
 | ISP2     | 10.255.0.12  | Test reachability       |
 | BR1-RTR  | 10.255.1.1   | EIGRP RID, DMVPN        |
-| BR2-RTR  | 10.255.1.2   | EIGRP RID               |
-| BR3-RTR  | 10.255.1.3   | EIGRP RID               |
+| BR2-RTR  | 10.255.1.2   | EIGRP RID, DMVPN        |
+| BR3-RTR  | 10.255.1.3   | EIGRP RID, DMVPN        |
 
 ## P2P Links (/30)
 
@@ -63,15 +62,15 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | R1 (Hub)  | 10.200.0.1  |
 | BR1-RTR   | 10.200.0.11 |
 | BR2-RTR   | 10.200.0.12 |
-| BR3-RTR   | 10.200.0.13 |
+| BR3-RTR   | 10.200.0.13 |GIVE M
 
-## VLAN IPs (SVI)
+## VLAN IPs (VRRP on CSW1/CSW2)
 
-| VLAN Purpose       | Subnet        | Gateway IP  | Devices               |
-| ------------------ | ------------- | ----------- | --------------------- |
-| VLAN 10 – Users    | 10.101.0.0/24 | 10.101.0.1  | ASW1/ASW2 (HSRP)      |
-| VLAN 20 – Servers  | 10.102.0.0/24 | 10.102.0.1  | ASW1/ASW2 (HSRP)      |
-| VLAN 99 – Mgmt     | 10.250.0.0/24 | 10.250.0.1  | CSW1/CSW2 (HSRP)      |
+| VLAN Purpose       | Subnet        | Gateway IP    | Devices               |
+| ------------------ | ------------- | ------------- | --------------------- |
+| VLAN 10 – Users    | 10.101.0.0/24 | 10.101.0.254  | ASW1/ASW2 (PC1, PC3)  |
+| VLAN 20 - Sales    | 10.102.0.0/24 | 10.102.0.254  | ASW1/ASW2 (PC2, PC3)  |
+| VLAN 50 – Servers  | 10.150.0.0/24 | 10.102.0.254  | ASW1/ASW2 (SRV1, SRV2)|
 
 ## DMZ Zone
 
@@ -81,10 +80,10 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | SRV2 (Syslog, SNMPv3)    | 10.150.0.11  |
 | DMZ SVI (Firewall side)  | 10.150.0.1   |
 
-## Virtual IPs (HSRP / VRRP)
+## Virtual IPs (VRRP)
 
-| VLAN | Virtual IP    | Routers              |
-| ---- | ------------- | -------------------- |
-| 10   | 10.101.0.254  | R1 & R2 or CSW1/CSW2 |
-| 20   | 10.102.0.254  | R1 & R2              |
-| 99   | 10.250.0.254  | R1 & R2              |
+| VLAN | Virtual IP    | Routers      |
+| ---- | ------------- | -------------| 
+| 10   | 10.101.0.254  | CSW1 & CSW2  |
+| 20   | 10.102.0.254  | CSW1 & CSW2  |
+| 50   | 10.150.0.254  | CSW1 & CSW2  |
