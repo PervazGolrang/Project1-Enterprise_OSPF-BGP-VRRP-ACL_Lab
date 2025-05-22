@@ -8,10 +8,9 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | --------------- | -------------- | -------------------------- |
 | Loopbacks       | 10.255.X.X/32  | Router-IDs, BGP            |
 | P2P Links       | 10.100.X.X/30  | Point-to-point links       |
-| Tunnel Intfs    | 10.200.X.X/24  | DMVPN tunnels (R1 + BRs)   |
-| VLANs           | 10.10X.X.X/24  | SVI gateways               |
+| VLANs           | 10.10X.0.X/24  | SVI gateways, ex/ VLAN 50  |
+| Tunnel Intfs    | 10.200.0.X/24  | DMVPN tunnels (R1 + BRs)   |
 | DMZ Servers     | 10.150.0.0/24  | Syslog, DNS, SNMP, etc     |
-| NAT Outside     | DHCP from net  | BR routers & Edge use this |
 
 ## Loopback IPs (/32)
 
@@ -28,32 +27,30 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | R-EDGE   | 10.255.0.9   | BGP Router-ID, HUB      |
 | ISP1     | 10.255.0.11  | Test reachability       |
 | ISP2     | 10.255.0.12  | Test reachability       |
+| DMZ-SW   | 10.255.0.13  | Test reachability       |
 | BR1-RTR  | 10.255.1.1   | EIGRP RID, DMVPN        |
 | BR2-RTR  | 10.255.1.2   | EIGRP RID, DMVPN        |
 | BR3-RTR  | 10.255.1.3   | EIGRP RID, DMVPN        |
 
 ## P2P Links (/30)
 
-| Link               | Subnet         | IP Assignments           |
-| ------------------ | -------------- | ------------------------ |
-| R1 ↔ R2            | 10.100.0.0/30  | R1: .1, R2: .2           |
-| R1 ↔ CSW1          | 10.100.0.4/30  | R1: .5, CSW1: .6         |
-| R1 ↔ CSW2          | 10.100.0.8/30  | R1: .9, CSW2: .10        |
-| R2 ↔ CSW1          | 10.100.0.12/30 | R2: .13, CSW1: .14       |
-| R2 ↔ CSW2          | 10.100.0.16/30 | R2: .17, CSW2: .18       |
-| R-EDGE ↔ FW inside | 10.100.0.20/30 | R-EDGE: .21, FW: .22     |
-| FW ↔ R1 core       | 10.100.0.24/30 | FW: .25, R1: .26         |
-| FW ↔ R2 core       | 10.100.0.28/30 | FW: .29, R2: .30         |
-| FW ↔ DMZ-SW        | 10.100.0.32/30 | FW: .33, DMZ-SW: .34     |
-| FW ↔ ISP1          | Unknown        | Unassigned               |
-| FW ↔ ISP2          | Unknown        | Unassigned               |
-| R-EDGE ↔ ISP1      | 10.100.0.36/30 | R-EDGE: .37, ISP1: .38   |
-| R-EDGE ↔ ISP2      | 10.100.0.40/30 | R-EDGE: .41, ISP2: .42   |
-| ISP1 ↔ Internet    | Unknown        | Unassigned               |
-| ISP2 ↔ Internet    | Unknown        | Unassigned               |
-| BR1-RTR ↔ Internet | DHCP           | NATed real IP            |
-| BR2-RTR ↔ Internet | DHCP           | NATed real IP            |
-| BR3-RTR ↔ Internet | DHCP           | NATed real IP            |
+| Link               | Subnet          | IP Assignments           |
+| ------------------ | --------------- | ------------------------ |
+| R1 ↔ R2            | 10.100.0.0/30   | R1: .1, R2: .2           |
+| R1 ↔ CSW1          | 10.100.0.4/30   | R1: .5, CSW1: .6         |
+| R1 ↔ CSW2          | 10.100.0.8/30   | R1: .9, CSW2: .10        |
+| R2 ↔ CSW1          | 10.100.0.12/30  | R2: .13, CSW1: .14       |
+| R2 ↔ CSW2          | 10.100.0.16/30  | R2: .17, CSW2: .18       |
+| R-EDGE ↔ R1 Core   | 10.100.0.20/30  | R-EDGE: .21, R1: .22     |
+| R-EDGE ↔ R2 Core   | 10.100.0.24/30  | R-EDGE: .25, R2: .26     |
+| R-EDGE ↔ DMZ-SW    | 10.150.0.0/30   | R-EDGE: .1, DMZ-SW: .X   |
+| ISP1 ↔ Internet    | 10.100.1.0/30   | ISP1: .1, Internet: .2   |
+| ISP2 ↔ Internet    | 10.100.2.0/30   | ISP2: .1, Internet: .2   |
+| R-EDGE ↔ ISP1      | 193.182.25.0/30 | R-EDGE: .1, ISP1: .2     |
+| R-EDGE ↔ ISP2      | 185.75.210.8/30 | R-EDGE: .9, ISP1: .10    |
+| BR1-RTR ↔ Internet | DHCP            | NATed real IP            |
+| BR2-RTR ↔ Internet | DHCP            | NATed real IP            |
+| BR3-RTR ↔ Internet | DHCP            | NATed real IP            |
 
 ## DMVPN Tunnels (R1 = Hub)
 
