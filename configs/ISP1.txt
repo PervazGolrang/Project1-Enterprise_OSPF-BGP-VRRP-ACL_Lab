@@ -1,0 +1,108 @@
+! ===================================================
+! Project1 - Full Enterprise Lab
+! Device: ISP1
+! Description: ISP router with eBGP link to R-EDGE
+! ====================================================
+
+ISP1#
+ISP1#show run
+Building configuration...
+
+Current configuration : 3233 bytes
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname ISP1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging buffered 64000
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+redundancy
+!
+!
+!
+interface Loopback0
+ ip address 10.255.0.11 255.255.255.255
+!
+interface GigabitEthernet0/0
+ description "To R-EDGE"
+ ip address 193.182.25.2 255.255.255.252
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/1
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/2
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+interface GigabitEthernet0/3
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router bgp 65011
+ bgp router-id 10.255.0.11
+ bgp log-neighbor-changes
+ network 0.0.0.0
+ network 10.255.0.11 mask 255.255.255.255
+ neighbor 193.182.25.1 remote-as 65001
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 Null0
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end

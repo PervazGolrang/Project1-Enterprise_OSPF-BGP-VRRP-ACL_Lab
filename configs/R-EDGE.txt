@@ -1,0 +1,184 @@
+! =========================================================================================
+! Project1 - Full Enterprise Lab
+! Device: R-EDGE
+! Description: Edge router with static + IP SLA failover, BGP/OSPF redistribution, ACLs
+! =========================================================================================
+
+R-EDGE#show run
+Building configuration...
+
+Current configuration : 8460 bytes
+!
+! Last configuration change at 21:10:49 UTC Fri May 23 2025
+!
+version 17.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname R-EDGE
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging buffered 64000
+!
+no aaa new-model
+!
+!
+no ip domain lookup
+ip domain name golrang.local
+!
+!
+!
+login on-success log
+!
+!
+subscriber templating
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+spanning-tree extend system-id
+!
+username Golrang secret 8 $8$VbNBo0bywH3mck$btSeTAaV08AD12g0HrcVlpV96y35/jKUJV/YHUL.WN2
+!
+redundancy
+!
+!
+track 1 ip sla 1 reachability
+ delay down 10 up 5
+!
+!
+!
+!
+interface Loopback0
+ ip address 10.255.0.9 255.255.255.255
+!
+interface GigabitEthernet1
+ description "Uplink to ISP1"
+ ip address 193.182.25.1 255.255.255.252
+ ip access-group ISP_INBOUND in
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description "Uplink to ISP2"
+ ip address 185.75.210.9 255.255.255.252
+ ip access-group ISP_INBOUND in
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description "Downlink to CSW2"
+ ip address 10.100.0.25 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ no ip address
+ ip access-group DMZ_INBOUND in
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet5
+ description "Downlink to R1"
+ ip address 10.100.0.21 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet6
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+router ospf 1
+ router-id 10.255.0.9
+ redistribute static
+ redistribute bgp 65001 route-map BGP-DEFAULT
+ passive-interface default
+ no passive-interface GigabitEthernet3
+ no passive-interface GigabitEthernet5
+ network 10.100.0.0 0.0.0.255 area 0
+ network 10.150.0.0 0.0.0.255 area 0
+ network 10.255.0.9 0.0.0.0 area 0
+ network 185.75.210.8 0.0.0.3 area 0
+ network 193.182.25.0 0.0.0.3 area 0
+ default-information originate always
+!
+router bgp 65001
+ bgp router-id 10.255.0.9
+ bgp log-neighbor-changes
+ network 10.255.0.9 mask 255.255.255.255
+ neighbor 185.75.210.10 remote-as 65012
+ neighbor 193.182.25.2 remote-as 65011
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip route 0.0.0.0 0.0.0.0 193.182.25.2 track 1
+ip route 0.0.0.0 0.0.0.0 185.75.210.10 5
+ip ssh version 2
+!
+ip access-list extended ISP_INBOUND
+ 10 permit tcp host 193.182.25.2 host 193.182.25.1 eq bgp
+ 15 permit tcp host 193.182.25.1 host 193.182.25.2 eq bgp
+ 20 permit tcp host 185.75.210.10 host 185.75.210.9 eq bgp
+ 25 permit tcp host 185.75.210.9 host 185.75.210.10 eq bgp
+ 30 remark "Allow ICMP"
+ 30 permit icmp any any
+ 40 remark "Allow Loopback reachability"
+ 40 permit ip host 10.255.0.11 any
+ 50 permit ip host 10.255.0.12 any
+ 60 remark "Deny all else"
+ 60 deny   ip any any log
+!
+!
+ip prefix-list DEFAULT-ONLY seq 5 permit 0.0.0.0/0
+ip sla 1
+ icmp-echo 193.182.25.2 source-interface GigabitEthernet1
+  frequency 5
+ip sla schedule 1 life forever start-time now
+!
+!
+route-map BGP-DEFAULT permit 10
+ match ip address prefix-list DEFAULT-ONLY
+ set metric 50
+ set metric-type type-1
+ set tag 65001
+!
+control-plane
+!
+!
+banner motd ^CUNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED. Violators will be prosecuted to the full extent of the law.^C
+!
+line con 0
+ logging synchronous
+ login local
+ stopbits 1
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+end

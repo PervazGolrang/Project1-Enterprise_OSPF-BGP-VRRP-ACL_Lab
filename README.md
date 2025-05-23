@@ -1,12 +1,35 @@
-# Full Enterprise Network Lab – Project 1
+# Full Enterprise Lab - Project 1
 
-This CCNP project simulates a full-stack enterprise network using Cisco and Fortinet devices, built in EVE-NG. The design includes routing, failover, VPN, monitoring, and security zones.
+This is a complete simplistic CCNP enterprise network simulation using Cisco devices in EVE-NG.
+
+## Topology Overview
+Includes:
+- OSPF (Area 0)
+- eBGP between R-EDGE and ISPs
+- IP SLA + Tracking for dual ISP failover
+- VRRP between CSW1/CSW2
+- ACLs for ISP and DMZ control
+- Port security, STP (portfast, bpduguard)
 
 ## Topology
-See `topology/full-topology.drawio` and `docs/IP-Plan.md`
+[`full-topology-drawio.drawio`](topology/full-topology-drawio.drawio)
 
-## Docs
-- [IP Plan](docs/IP-Plan.md)
-- [Routing](docs/Routing.md)
-- [Features](docs/Features.md)
-- [Firewall + NAT](docs/NAT-Firewall.md)
+## Directory Layout
+- `configs/`: Device configurations
+- `docs/`: Documentation
+- `topology/`: Draw.io diagram
+- `notes/`: Scratch notes
+
+## Configurations
+
+The `configs/` directory contains raw text-based configurations for each network device used in the lab. These were manually written and verified during lab creation.
+
+- Compatible with EVE-NG
+- Contains interface configs, routing protocols, ACLs, and VRRP
+- Devices: R1, R2, R-EDGE, ISP1, ISP2, ASW1–4, CSW1, CSW2
+
+## Network Devices:
+- CSR1000v
+- vIOS Switch
+- vIOS Router
+- Virtual PC (VPC)

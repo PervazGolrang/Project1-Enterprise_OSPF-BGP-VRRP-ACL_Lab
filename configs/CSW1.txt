@@ -1,0 +1,183 @@
+! ====================================================================
+! Project1 - Full Enterprise Lab
+! Device: CSW1
+! Description: Core switch with ROAS, VRRP, and OSPF ECMP
+! ====================================================================
+
+CSW1#show run
+Building configuration...
+
+Current configuration : 8060 bytes
+!
+! Last configuration change at 20:56:12 UTC Fri May 23 2025
+!
+version 17.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname CSW1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging buffered 64000
+!
+no aaa new-model
+!
+!
+no ip domain lookup
+ip domain name golrang.local
+!
+!
+login on-success log
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+spanning-tree extend system-id
+!
+username Golrang secret 8 $8$To4Pls.9SNH1yk$Sy9j8ifm/C8w5ONeBP66SyMkCkNPWTbXQ6lDz4Y1Cn2
+!
+redundancy
+!
+!
+!
+interface Loopback0
+ ip address 10.255.0.3 255.255.255.255
+!
+interface GigabitEthernet1
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet1.10
+ description "VLAN 10 - Users"
+ encapsulation dot1Q 10
+ ip address 10.101.0.1 255.255.255.0
+ vrrp 10 ip 10.101.0.253
+!
+interface GigabitEthernet1.20
+ description "VLAN 20 - Sales"
+ encapsulation dot1Q 20
+ ip address 10.102.0.1 255.255.255.0
+ vrrp 20 ip 10.102.0.253
+!
+interface GigabitEthernet1.50
+ shutdown
+!
+interface GigabitEthernet2
+ description "Downlink to ASW1"
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description "Downlink to ASW2"
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description "To CSW2"
+ ip address 10.110.0.1 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet5
+ description "Uplink to R1"
+ ip address 10.100.0.6 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet6
+ no ip address
+ shutdown
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet7
+ description "Uplink to R2"
+ ip address 10.100.0.14 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet8
+ description "Downlink to ASW3"
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet9
+ description "Downlink to ASW4"
+ no ip address
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+router ospf 1
+ router-id 10.255.0.3
+ passive-interface default
+ no passive-interface GigabitEthernet1
+ no passive-interface GigabitEthernet2
+ no passive-interface GigabitEthernet3
+ no passive-interface GigabitEthernet4
+ no passive-interface GigabitEthernet5
+ no passive-interface GigabitEthernet6
+ no passive-interface GigabitEthernet7
+ no passive-interface Loopback0
+ network 10.100.0.0 0.0.0.255 area 0
+ network 10.101.0.0 0.0.0.255 area 0
+ network 10.102.0.0 0.0.0.255 area 0
+ network 10.110.0.0 0.0.0.3 area 0
+ network 10.255.0.3 0.0.0.0 area 0
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh version 2
+!
+!
+control-plane
+!
+!
+banner motd ^CUNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED. Violators will be prosecuted to the full extent of the law.^C
+!
+line con 0
+ logging synchronous
+ login local
+ stopbits 1
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+end

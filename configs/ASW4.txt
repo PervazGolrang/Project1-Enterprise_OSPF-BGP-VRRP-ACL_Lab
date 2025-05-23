@@ -1,0 +1,121 @@
+! ================================================================================
+! Project1 - Full Enterprise Lab
+! Device: ASW4
+! Description: Access switch with trunk to CSWs, port-security and VLAN access
+! ================================================================================
+
+ASW4#show run
+Building configuration...
+
+Current configuration : 3861 bytes
+!
+! Last configuration change at 21:01:53 UTC Fri May 23 2025
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname ASW4
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging buffered 64000
+!
+username Golrang secret 8 $8$AG3jgT2BXCCuDf$U73iXPIWcosEL7cBpwm5AFaXsl/YBMVQrzqOKM6VAio
+no aaa new-model
+!
+!
+!
+no ip domain-lookup
+ip domain-name golrang.local
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+interface Loopback0
+ ip address 10.255.0.8 255.255.255.0
+!
+interface GigabitEthernet0/0
+ description "Uplink to CSW2"
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/1
+ description "PC4 - VLAN 20"
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security maximum 2
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ switchport port-security
+ negotiation auto
+ spanning-tree portfast edge
+ spanning-tree bpduguard enable
+!
+interface GigabitEthernet0/2
+ description "Uplink to CSW1"
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ negotiation auto
+!
+interface GigabitEthernet0/3
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/0
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/1
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/2
+ shutdown
+ negotiation auto
+!
+interface GigabitEthernet1/3
+ shutdown
+ negotiation auto
+!
+interface Vlan20
+ description "Sales"
+ no ip address
+!
+ip forward-protocol nd
+!
+ip http server
+ip http secure-server
+!
+ip ssh version 2
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+control-plane
+!
+banner motd ^C UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED. Violators will be prosecuted to the full extent of the law.^C
+!
+line con 0
+ logging synchronous
+ login local
+line aux 0
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+end

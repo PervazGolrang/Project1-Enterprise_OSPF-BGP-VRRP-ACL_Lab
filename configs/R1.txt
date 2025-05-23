@@ -1,0 +1,129 @@
+! ==========================================================================
+! Project1 - Full Enterprise Lab
+! Device: R1
+! Description: Primary router connected to CSW1/CSW2 and R-EDGE, runs OSPF
+! ==========================================================================
+
+R1#show run
+Building configuration...
+
+Current configuration : 7012 bytes
+!
+! Last configuration change at 21:11:09 UTC Fri May 23 2025
+!
+version 17.3
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service call-home
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+platform console serial
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging buffered 64000
+!
+no aaa new-model
+!
+!
+no ip domain lookup
+ip domain name golrang.local
+!
+!
+!
+login on-success log
+!
+!
+!
+subscriber templating
+!
+!
+multilink bundle-name authenticated
+!
+!
+spanning-tree extend system-id
+!
+username Golrang secret 8 $8$NLlDMneKSfcJkE$Lq2CAKnmPcvSd6WPJ7swb6.pUvaydDM5d9tOL6uXOI2
+!
+redundancy
+!
+!
+!
+interface Loopback0
+ description Router-ID
+ ip address 10.255.0.1 255.255.255.255
+!
+interface GigabitEthernet1
+ description "Downlink to CSW1"
+ ip address 10.100.0.5 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ description "Downlink to CSW2"
+ ip address 10.100.0.9 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet3
+ description "Uplink to R-EDGE"
+ ip address 10.100.0.22 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet4
+ description "To R2"
+ ip address 10.100.0.1 255.255.255.252
+ ip ospf network point-to-point
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+router ospf 1
+ router-id 10.255.0.1
+ passive-interface default
+ no passive-interface GigabitEthernet1
+ no passive-interface GigabitEthernet2
+ no passive-interface GigabitEthernet3
+ no passive-interface GigabitEthernet4
+ no passive-interface Loopback0
+ network 10.100.0.0 0.0.0.255 area 0
+ network 10.255.0.1 0.0.0.0 area 0
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip ssh version 2
+!
+!!
+!
+control-plane
+!
+!
+!
+banner motd ^C UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED. Violators will be prosecuted to the full extent of the law.^C
+!
+line con 0
+ logging synchronous
+ login local
+ stopbits 1
+line vty 0 4
+ logging synchronous
+ login local
+ transport input ssh
+!
+!
+!
+end
