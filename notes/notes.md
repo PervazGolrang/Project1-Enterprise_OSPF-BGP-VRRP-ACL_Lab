@@ -12,12 +12,12 @@
 * ACLs applied on Gi1 (ISP1), Gi2 (ISP2), and Gi4 (DMZ)
 * Route-map `BGP-DEFAULT` filters to only send 0.0.0.0/0
 
-### VRRP
+## VRRP
 
 * Active on all VLANs (10, 20)
 * CSW1 holds .253, CSW2 holds .254 (priority 110)
 
-### Core Switches (CSW1, CSW2)
+## Core Switches (CSW1, CSW2)
 
 * Do NOT support switchport
 * Use ROAS for VLAN subinterfaces

@@ -10,6 +10,7 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | P2P Links       | 10.100.X.X/30  | Point-to-point links       |
 | VLANs           | 10.10X.0.X/24  | SVI gateways, ex/ VLAN 50  |
 
+
 ## Loopback IPs (/32)
 
 | Device   | Loopback0 IP | Use                     |
@@ -27,6 +28,7 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | ISP2     | 10.255.0.12  | Test reachability       |
 | Internet | 10.255.0.14  | Test reachability       |
 
+
 ## P2P Links (/30)
 
 | Link               | Subnet          | IP Assignments            |
@@ -38,10 +40,6 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | R2 ↔ CSW2          | 10.100.0.16/30  | R2: .17, CSW2: .18        |
 | R-EDGE ↔ R1 Core   | 10.100.0.20/30  | R-EDGE: .21, R1: .22      |
 | R-EDGE ↔ R2 Core   | 10.100.0.24/30  | R-EDGE: .25, R2: .26      |
-
-| R-EDGE ↔ ISP1      | 193.182.25.0/30 | R-EDGE: .1, ISP1: .2      |
-| R-EDGE ↔ ISP2      | 185.75.210.8/30 | R-EDGE: .9, ISP1: .10     |
-
 | ISP1 ↔ Internet    | 10.100.1.0/30   | ISP1: .1, Internet: .2    |
 | ISP2 ↔ Internet    | 10.100.2.0/30   | ISP2: .1, Internet: .2    |
 | CSW1 ↔ CSW2        | 10.110.0.0/30   | CSW1: .1, CSW2: .2        |
@@ -54,12 +52,14 @@ All IPs are based on **10.x.x.x**, clean /30s for P2P, /24s for VLANs, and speci
 | R-EDGE ↔ ISP1      | 193.186.24.0/30 | R-EDGE: .1, ISP1: .2      |
 | R-EDGE ↔ ISP2      | 185.75.210.8/30 | R-EDGE: .9, ISP2: .10     |
 
+
 ## VLANs (ROAS on CSWs)
 
-| VLAN    | Purpose    | Gateway CSW1   | Gateway CSW2   | Subnets        |
-| --------| -----------| -------------- | -------------- | -------------  |
-| VLAN 10 | Users      | 10.101.0.253/24  | 10.101.0.254/24  | 10.101.0.0/24  |
-| VLAN 20 | Sales      | 10.102.0.253/24  | 10.102.0.254/24  | 10.102.0.0/24  |
+| VLAN    | Purpose    | Gateway CSW1     | Gateway CSW2       | Subnets        |
+| ------- | ---------- | ---------------- | ------------------ | -------------  |
+| VLAN 10 | Users      | 10.101.0.253/24  | 10.101.0.254/24    | 10.101.0.0/24  |
+| VLAN 20 | Sales      | 10.102.0.253/24  | 10.102.0.254/24    | 10.102.0.0/24  |
+
 
 ## PC IP
 
