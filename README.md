@@ -12,7 +12,8 @@ Includes:
 - Port security, STP (portfast, bpduguard)
 
 ## Topology
-[`full-topology-drawio.drawio`](topology/full-topology-drawio.drawio)
+[`full_topology_drawio.drawio`](topology/full_tpology.drawio)
+[`full_topology_eve-ng.png`](topology/topo-eve_ng.png)
 
 ## Directory Layout
 - `configs/`: Device configurations
