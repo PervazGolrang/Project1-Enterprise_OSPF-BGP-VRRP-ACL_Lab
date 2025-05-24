@@ -1,4 +1,4 @@
-# Full Enterprise Lab - Project 1
+# Enterprise Lab - Project 1
 
 This is a complete simplistic CCNP enterprise network simulation using Cisco devices in EVE-NG.
 
