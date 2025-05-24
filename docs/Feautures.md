@@ -23,7 +23,6 @@
 
 * Inbound ACLs on R-EDGE:
   * ISP_INBOUND: Allows only BGP, ICMP, and specific loopback access
-  * DMZ_INBOUND: Allows specific services to DMZ VLAN only
 * Port-security on ASW ports
 * BPDU Guard + PortFast Edge on all end-user access ports
 
