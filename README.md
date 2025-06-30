@@ -11,9 +11,16 @@ Includes:
 - ACLs for ISP and DMZ control
 - Port security, STP (portfast, bpduguard)
 
-## Topology
-[`full_topology_drawio.drawio`](topology/full_tpology.drawio)
-[`full_topology_eve-ng.png`](topology/topo-eve_ng.png)
+---
+
+## Network Topology
+
+![`Network Topology`](topology/topo-eve_ng.png)
+
+### Drawio Topology
+[`project3_topology.drawio`](topology/full_tpology.drawio)  
+
+---
 
 ## Directory Layout
 - `configs/`: Device configurations
