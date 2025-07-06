@@ -33,7 +33,7 @@
 
 ### 6. Management and Planning
 
-* All IPs documented in `IP-Plan.md`
+* All IPs documented in [`IP-Plan.md`](/docs/IP-Plan.md)
 * Static subnets for point-to-point links, loopbacks, and VLANs
 
 ### 7. Lab Goals Completed
