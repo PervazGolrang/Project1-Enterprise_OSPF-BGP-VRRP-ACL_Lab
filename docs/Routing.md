@@ -33,12 +33,12 @@ This lab uses OSPF as the IGP and eBGP between R-EDGE and both ISPs. Static rout
 
 ```
 ip sla 1
- icmp-echo 193.182.25.2 source-interface GigabitEthernet1
+ icmp-echo 193.186.24.2 source-interface GigabitEthernet1
   frequency 5
 ip sla schedule 1 life forever start-time now
 track 1 ip sla 1 reachability
  delay down 10 up 5
-ip route 0.0.0.0 0.0.0.0 193.182.25.2 track 1
+ip route 0.0.0.0 0.0.0.0 193.186.24.2 track 1
 ip route 0.0.0.0 0.0.0.0 185.75.210.10 5
 ```
 

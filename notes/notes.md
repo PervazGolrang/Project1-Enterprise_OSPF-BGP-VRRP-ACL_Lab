@@ -15,7 +15,7 @@
 ## VRRP
 
 * Active on all VLANs (10, 20)
-* CSW1 holds .253, CSW2 holds .254 (priority 110)
+* CSW1 SVI = .253, CSW2 SVI = .252, VRRP VIP = .254 (CSW2 priority 110)
 
 ## Core Switches (CSW1, CSW2)
 

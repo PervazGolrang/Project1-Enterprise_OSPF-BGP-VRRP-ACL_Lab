@@ -15,10 +15,10 @@ Includes:
 
 ## Network Topology
 
-![`Network Topology`](topology/topo-eve_ng.png)
+![`Network Topology`](topology/topology-eve_ng.png)
 
 ### Drawio Topology
-[`project3_topology.drawio`](topology/full_tpology.drawio)  
+[`project3_topology.drawio`](topology/project1_topology.drawio)  
 
 ---
 
